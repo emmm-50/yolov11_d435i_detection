@@ -1,12 +1,12 @@
-# yolov5_d435i_detection
-**使用realsense d435i相机，基于pytorch实现yolov5目标检测，实时返回检测目标相机坐标系下的位置信息。**
+# yolov11_d435i_detection
+**使用realsense d435i相机，基于pytorch实现yolov11目标检测，实时返回检测目标相机坐标系下的位置信息。**
 
 # 1.Environment：
 
-1.一个可以运行YOLOv5的python环境
+1.一个可以运行YOLOv11的python环境
 
 ```bash
-pip install -r requirements.txt
+
 ```
 
 2.一个realsense相机和pyrealsense2库
@@ -15,11 +15,9 @@ pip install -r requirements.txt
 pip install pyrealsense2
 ```
 
-**在下面两个环境中测试成功**
+**在以下环境中测试成功**
 
-- **win10** python 3.8 Pytorch 1.10.2+gpu CUDA 11.3  NVIDIA GeForce MX150
-
-- **ubuntu16.04**  python 3.6 Pytorch 1.7.1+cpu
+- **ubuntu 20.04.1** python 3.10 Pytorch 2.4.1+gpu CUDA 12.4 NVIDIA GeForce RTX 4060 Laptop GPU
 
 # 2.Results：
 
@@ -33,10 +31,10 @@ pip install pyrealsense2
 
 # 3.Model config：
 
-修改模型配置文件，这里以yolov5s模型为例。也可以使用自己训练的权重模型。
+修改模型配置文件，这里以yolov11n模型为例。也可以使用自己训练的权重模型。
 
 ```yaml
-weight:  "weights/yolov5s.pt"
+weight:  "weights/yolov11n.pt"
 # 输入图像的尺寸
 input_size: 640
 # 类别个数
@@ -63,7 +61,7 @@ device: '0'
 
 # 4.Camera config：
 
-分辨率好像只能改特定的参数，不然会报错。d435i可以用 1280x720, 640x480, 848x480。
+分辨率只能改特定的参数，不然会报错。d435i可以用 1280x720, 640x480, 848x480。
 
 ```python
 config.enable_stream(rs.stream.depth, 1280, 720, rs.format.z16, 30)
@@ -88,6 +86,6 @@ for i in range(len(xyxy_list)):
 ```
 # 6.Reference:
 
-[https://github.com/ultralytics/yolov5](https://github.com/ultralytics/yolov5)
+[https://github.com/ultralytics](https://github.com/ultralytics)
 
-[https://github.com/mushroom-x/yolov5-simple](https://github.com/mushroom-x/yolov5-simple)
+[https://github.com/Thinkin99/yolov5_d435i_detection](https://github.com/Thinkin99/yolov5_d435i_detection)
