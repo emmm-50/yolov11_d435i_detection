@@ -1,0 +1,6 @@
+[submodule "librealsense"]
+	path = librealsense
+	url = https://github.com/IntelRealSense/librealsense.git
+[submodule "ultralytics"]
+	path = ultralytics
+	url = https://github.com/ultralytics/yolov5.git
