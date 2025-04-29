@@ -13,6 +13,7 @@ conda create -n yolov11 python=3.10 -y
 ```bash
 # 激活新创建的环境
 conda activate yolov11
+```
 
 1.2
 ```bash
