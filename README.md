@@ -5,8 +5,25 @@
 
 1.一个可以运行YOLOv11的python环境
 
+1.1
 ```bash
+# 创建一个 Python 3.10 的环境（环境名为 yolov11）
+conda create -n yolov11 python=3.10 -y
+```
+```bash
+# 激活新创建的环境
+conda activate yolov11
 
+1.2
+```bash
+# 安装 PyTorch（含 CUDA ）
+conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia -y
+```
+
+1.3
+```bash
+# 安装项目依赖
+pip install -r requirements.txt
 ```
 
 2.一个realsense相机和pyrealsense2库
