@@ -41,11 +41,6 @@ pip install pyrealsense2
 
 - Colorimage:
 
-![image-20220213144406079](https://github.com/Thinkin99/yolov5_d435i_detection/blob/main/image/image-20220213144406079.png)
-
-- Colorimage and depthimage:
-
-![image-20220213143921695](https://github.com/Thinkin99/yolov5_d435i_detection/blob/main/image/image-20220213143921695.png)
 
 # 3.Model config：
 
@@ -88,19 +83,26 @@ config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
 # 5.code return xyz：
 下方代码实现从像素坐标系到相机坐标系转换，并且标注中心点以及三维坐标信息。
 ```python
-for i in range(len(xyxy_list)):
-    ux = int((xyxy_list[i][0]+xyxy_list[i][2])/2)  # 计算像素坐标系的x
-    uy = int((xyxy_list[i][1]+xyxy_list[i][3])/2)  # 计算像素坐标系的y
-    dis = aligned_depth_frame.get_distance(ux, uy)  
-    camera_xyz = rs.rs2_deproject_pixel_to_point(
-    depth_intrin, (ux, uy), dis)  # 计算相机坐标系xyz
-    camera_xyz = np.round(np.array(camera_xyz), 3)  # 转成3位小数
-    camera_xyz = camera_xyz.tolist()
-    cv2.circle(canvas, (ux,uy), 4, (255, 255, 255), 5)#标出中心点
-    cv2.putText(canvas, str(camera_xyz), (ux+20, uy+10), 0, 1,
-                                [225, 255, 255], thickness=2, lineType=cv2.LINE_AA)#标出坐标
-    camera_xyz_list.append(camera_xyz)
-    #print(camera_xyz_list)
+# 深度坐标投影
+camera_xyz_list = []
+for cid, xyxy in zip(cls_ids, boxes):
+    # 1. 计算检测框中心像素 (u, v)
+    x1, y1, x2, y2 = map(int, xyxy)
+    ux, uy = (x1 + x2) // 2, (y1 + y2) // 2
+
+    # 2. 读取该像素的深度值（以米为单位）
+    dist = depth_frame.get_distance(ux, uy)
+
+    # 3. 像素坐标 + 深度 → 相机坐标
+    xyz = rs.rs2_deproject_pixel_to_point(depth_intrin, (ux, uy), dist)
+    xyz = np.round(xyz, 3).tolist()
+    camera_xyz_list.append(xyz)
+
+    # 4. 在图像上画出中心点并标注三维坐标
+    cv2.circle(canvas, (ux, uy), 4, (255, 255, 255), 2)
+    cv2.putText(canvas, str(xyz), (ux + 10, uy + 10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                (255, 255, 255), 1, cv2.LINE_AA)
 ```
 # 6.Reference:
 
